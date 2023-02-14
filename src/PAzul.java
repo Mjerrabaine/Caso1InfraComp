@@ -1,3 +1,5 @@
+import java.security.Principal;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -7,16 +9,16 @@
  *
  * @author usuario
  */
-public class PAzul extends Thread{
+public class PAzul extends ProcesoP{
 
     private int id;
-    private Buffer buffer;
-    private int times;
+    private Buffer bufferIn;
+    private Buffer bufferOut;
 
-    public PAzul(int id, Buffer buffer, int times) {
-        this.buffer = buffer;
+    public PAzul(int id, Buffer bufferIn,Buffer bufferOut) {
+        this.bufferIn = bufferIn;
+        this.bufferOut = bufferOut;
         this.id = id;
-        this.times = times;
     }
 
     private void enviarMensaje(int i) {

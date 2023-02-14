@@ -15,11 +15,15 @@ import com.sun.tools.javac.Main;
  */
 public class PNaranja extends Thread{
     private int id;
-    private Buffer buffer;
-    
-    public PNaranja(int id , Buffer buffer){
+    private Buffer bufferIn;
+    private Buffer bufferOut;
+    private int num_productos;
+
+    public PNaranja(int id, Buffer bufferIn,Buffer bufferOut,int num_productos) {
+        this.bufferIn = bufferIn;
+        this.bufferOut = bufferOut;
         this.id = id;
-        this.buffer =  buffer;
+        this.num_productos=num_productos;
     }
     
     public void imprimirMensaje(String mensaje){
@@ -28,6 +32,10 @@ public class PNaranja extends Thread{
         System.out.println(String.format(prot, this.id, mensaje));
     }
     public void run(){
+    	
+    	
+    	
+    	
         //se emplea una bandera para frenar el proceso
         
         while(!Main.isFinished()|| this.buffer.hayMensajes() ){//is finished?

@@ -14,18 +14,20 @@ import java.util.logging.Logger;
  * @author usuario
  */
 public class Buffer {
+	Object objNaranja=new Object();
+	Object objAzul=new Object();
     //lista de mensajes
-    private List<String> buffer;
+    private List<Producto> buffer;
    //capacidad del buffer
-    private int size;
+    private int capacidad;
     
     public Buffer(int size){
-    this.size = size;
-    this.buffer = new LinkedList<String>();
+    this.capacidad = size;
+    this.buffer = new LinkedList<Producto>();
     }
     
     public Buffer(){
-    this.buffer = new LinkedList<String>();
+    this.buffer = new LinkedList<Producto>();
     }
     
     public synchronized boolean hayMensajes(){
@@ -33,7 +35,7 @@ public class Buffer {
     }
     
     public synchronized void insertarMensaje(String mensaje){
-        while(this.buffer.size() ==this.size){
+        while(this.buffer.size() ==this.capacidad){
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -48,20 +50,52 @@ public class Buffer {
         notify();
     }
     
-    public synchronized String obtenerMensaje(){
-        while(this.buffer.size() ==0){
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        //retirar el mensaje
-        String mensaje= this.buffer.remove(0);
-        notify();
-        
-        //Entregar
-        return mensaje;
+    public Producto obtenerMensaje(boolean color,ProcesoP proceso){
+    	Producto productoElegido=null;
+    	if (color==true ) {//es naranja
+    		synchronized (objNaranja) {
+    			while(this.buffer.size() ==0){
+    	                try {
+							proceso.sleep(500);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+    	        }
+    			Boolean encontrado=false;
+    			int i=0;
+    			while(i<this.buffer.size() && encontrado==false) {
+    				Producto producto=this.buffer.get(i);
+    				if(producto.color==true) {
+    					productoElegido=producto;
+    					this.buffer.remove(i);
+    				}
+    			}
+			}
+    	}
+    	else {// el color es azul
+    		synchronized (objAzul) {
+    			while(this.buffer.size() ==0){
+    	                try {
+							wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+    	        }
+    			Boolean encontrado=false;
+    			int i=0;
+    			while(i<this.buffer.size() && encontrado==false) {
+    				Producto producto=this.buffer.get(i);
+    				if(producto.color==false) {
+    					productoElegido=producto;
+    					this.buffer.remove(i);
+    				}
+    			}
+			}
+    		
+    	}
+        return productoElegido;
     }
     
     

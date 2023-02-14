@@ -30,7 +30,7 @@ public class Principal {
         PAzul pA6 = new PAzul(2, buffer1, 4);
         PNaranja pN3 = new PNaranja(3, buffer1);
         
-        PFinal f1 = new PFinal(1, buffer);
+        PFinal f1 = new PFinal(1);
 
 
         pA1.start();
