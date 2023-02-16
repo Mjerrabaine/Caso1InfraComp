@@ -15,10 +15,19 @@ import com.sun.tools.javac.Main;
  */
 public class PNaranja extends Thread{
     private int id;
+   private Buffer bufferInicial;
     private Buffer bufferIn;
     private Buffer bufferOut;
     private int num_productos;
+    private final boolean COLOR = true;
 
+    //Constructor para los threads de la etapa 1, solo necesitan 1 buffer
+    public PNaranja(int id, Buffer buffer,int num_productos) {
+        this.bufferInicial = buffer;
+        this.id = id;
+        this.num_productos=num_productos;
+    }
+    
     public PNaranja(int id, Buffer bufferIn,Buffer bufferOut,int num_productos) {
         this.bufferIn = bufferIn;
         this.bufferOut = bufferOut;
