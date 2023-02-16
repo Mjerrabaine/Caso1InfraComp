@@ -14,7 +14,6 @@ import java.util.logging.Logger;
  * @author usuario
  */
 public class Buffer {
-
     Object objNaranja = new Object();
     Object objAzul = new Object();
     //lista de mensajes
@@ -54,6 +53,9 @@ public class Buffer {
                 this.contN++;
                 this.capacidad--;
                 this.buffer.add(producto);
+                producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getId()+
+                		" de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
+                		" ha ingresado al buffer:");
             }
         }
         if (proceso.getColor() == false) {//true azul
@@ -70,6 +72,9 @@ public class Buffer {
                 this.capacidad--;
                 this.buffer.add(producto);
                 notify();
+                producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getId()+
+                		" de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
+                		" ha ingresado al buffer:");
             }
         }
 

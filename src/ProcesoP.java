@@ -32,4 +32,6 @@ public abstract class ProcesoP extends Thread {
         
     }
     public abstract  boolean getColor();
+    public abstract int getEtapa();
+    
 }

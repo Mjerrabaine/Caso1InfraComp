@@ -20,12 +20,19 @@ public class Producto {
         this.idProducto = idProducto;
     }
 
-    public void cambiarNombre(String s) {
-        this.nombre = s;
+    public void ModificarCadena(String s) {
+        this.cadena = cadena+" "+s;
     }
 
+    public void cambiarNombre(String s) {
+    	this.nombre=s;
+    }
     public boolean isColor() {
         return color;
     }
+
+	public  int getIdProducto() {
+		return idProducto;
+	}
     
 }

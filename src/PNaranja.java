@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+
 import com.sun.tools.javac.Main;
 
 
@@ -51,54 +53,24 @@ public class PNaranja extends ProcesoP{
     
     public void run(){
         
-        if(this.etapa==1){
-            this.CrearProductos(this.num_productos, this.COLOR);
-        }
-    	
-    	
-    	
-        //se emplea una bandera para frenar el proceso
-        
-        while(!Main.isFinished()|| this.buffer.hayMensajes() ){//is finished?
-            String mensaje = this.buffer.obtenerMensaje();
-            if(mensaje == null){
-                return;
+    	if (this.etapa == 1) {
+
+            ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
+            for(int i = 0; i<arregloProductos.size();i++){
+                Producto producto1 = arregloProductos.get(i);
+                this.bufferInicial.insertarMensaje(this, producto1);
             }
-            //mostrar mensaje
-            this.imprimirMensaje(mensaje);
         }
+        else if (this.etapa==4){//etapa final
+            
+        }
+        else{//buffer 2 y 3
+        	Producto producto=this.bufferIn.obtenerMensaje(this);
+        	this.bufferOut.insertarMensaje(this, producto);
+        }
+        }
+    @Override
+	public int getEtapa() {
+		return etapa;
+	}
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-}

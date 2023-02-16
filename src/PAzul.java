@@ -36,20 +36,24 @@ public class PAzul extends ProcesoP {
         this.num_productos = num_productos;
     }
 
-    private void enviarMensaje(int i) {
-        this.buffer.insertarMensaje(
-                "El  thread productor :" + this.id + "saluda con el mensaje"
-                + i + "de" + this.times + "mensajes"
-        );
+//    private void enviarMensaje(int i) {
+//        this.buffer.insertarMensaje(
+//                "El  thread productor :" + this.id + "saluda con el mensaje"
+//                + i + "de" + this.times + "mensajes"
+//        );
 
-    }
+//    }
 
     @Override
     public boolean getColor() {
         return this.COLOR;
     }
+    @Override
+    public int getEtapa() {
+		return etapa;
+	}
 
-    public void run() {
+	public void run() {
 //        for(int i=0; i<this.times; i++){
 //            this.enviarMensaje(i);
 //        }
@@ -62,11 +66,12 @@ public class PAzul extends ProcesoP {
                 this.bufferInicial.insertarMensaje(this, producto1);
             }
         }
-        else if (){//etapa final
+        else if (this.etapa==4){//etapa final
             
         }
-        else{
-        
+        else{//buffer 2 y 3
+        	Producto producto=this.bufferIn.obtenerMensaje(this);
+        	this.bufferOut.insertarMensaje(this, producto);
         }
 
     }

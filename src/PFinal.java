@@ -19,6 +19,7 @@ public class PFinal {
         this.bufferFinal = bufferFinal;
         this.id=id;
         this.productos= productos;
+        this.etapa=4;
         
     }
 }
