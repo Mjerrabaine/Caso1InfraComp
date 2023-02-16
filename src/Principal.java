@@ -16,7 +16,7 @@ public class Principal {
     public static void main(String[] args) {
         System.out.println("Bienvenido a la planta de produccion");
         var scanner  = new Scanner(System.in);
-        System.out.println("Por favor ingrese el numero de productos  a producir:");
+        System.out.println("Por favor ingrese el numero de productos a producir por proceso:");
         int numProductos= Integer.parseInt(scanner.nextLine());
         System.out.println("Por favor ingrese el tamaño de los buffers");
         int tamBuffers= Integer.parseInt(scanner.nextLine());
@@ -24,13 +24,12 @@ public class Principal {
         int numProcesos= Integer.parseInt(scanner.nextLine());
 
         Buffer buffer1 = new Buffer(tamBuffers);
-        Buffer buffer2 = new Buffer(tamBuffers);
-        Buffer buffer3 = new Buffer(tamBuffers);
+        Buffer buffer2 = new Buffer(tamBuffers);        
         Buffer bufferfinal = new Buffer();
         
         //numero de procesos por etapa
         int numProcesoA = numProcesos-1;
-        int productosAProducir = numProductos%numProcesos;
+        int productosAProducir = numProductos;
         //lleva la cuenta de los ids
         int contadorId = 0;
         
@@ -68,7 +67,7 @@ public class Principal {
         LinkedList lista3 = new LinkedList();
         i = 0;
         while(i<numProcesoA){
-            PAzul pAzul = new PAzul(contadorId, buffer2,buffer3,productosAProducir,3);
+            PAzul pAzul = new PAzul(contadorId, buffer2,bufferfinal,productosAProducir,3);
             String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
             lista2.add(pAzul);
@@ -76,12 +75,14 @@ public class Principal {
             pAzul.start();
         }
         
-        PNaranja pN3 = new PNaranja(3, buffer2,buffer3 ,1,3);
+        PNaranja pN3 = new PNaranja(3, buffer2,bufferfinal ,1,3);
         pN3.start();
         
+        //Etapa Final
         
-        PFinal pFinal = new PFinal(1,buffer3,bufferfinal, productosAProducir);       
-
+        PFinal pFinal = new PFinal(1,bufferfinal, productosAProducir);  //CAMBIAR A QUE SEA BUFFER FINAL IMPRIMIR   
+        pFinal.start();
+        
     }
 
 }

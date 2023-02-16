@@ -7,17 +7,17 @@ import com.sun.tools.javac.Main;
 
 
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+* Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+*/
 
 /**
- *
- * @author usuario
- */
+*
+* @author usuario
+*/
 public class PNaranja extends ProcesoP{
     private int id;
-   private Buffer bufferInicial;
+    private Buffer bufferInicial;
     private Buffer bufferIn;
     private Buffer bufferOut;
     private int num_productos;
@@ -53,24 +53,24 @@ public class PNaranja extends ProcesoP{
     
     public void run(){
         
-    	if (this.etapa == 1) {
-
+        if (this.etapa == 1) {
+            
             ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
             for(int i = 0; i<arregloProductos.size();i++){
                 Producto producto1 = arregloProductos.get(i);
                 this.bufferInicial.insertarMensaje(this, producto1);
             }
-        }
-        else if (this.etapa==4){//etapa final
+        }   
+        else{//buffer 2 y 3 la 3 es solo final
+            for(int i = 0; i<num_productos;i++){
+                Producto producto=this.bufferIn.obtenerMensaje(this);
+                this.bufferOut.insertarMensaje(this, producto);
+            }
             
         }
-        else{//buffer 2 y 3
-        	Producto producto=this.bufferIn.obtenerMensaje(this);
-        	this.bufferOut.insertarMensaje(this, producto);
-        }
-        }
-    @Override
-	public int getEtapa() {
-		return etapa;
-	}
     }
+    @Override
+    public int getEtapa() {
+        return etapa;
+    }
+}
