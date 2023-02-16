@@ -8,5 +8,16 @@
  * @author usuario
  */
 public class PFinal {
+    private int id;
+    private Buffer buffer3;
+    private Buffer bufferFinal;
+    private int productos;
     
+    public PFinal(int id, Buffer buffer3, Buffer bufferFinal, int productos){
+        this.buffer3 = buffer3;
+        this.bufferFinal = bufferFinal;
+        this.id=id;
+        this.productos= productos;
+        
+    }
 }
