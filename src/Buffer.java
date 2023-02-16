@@ -1,0 +1,129 @@
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+/**
+ *
+ * @author usuario
+ */
+public class Buffer {
+
+    Object objNaranja = new Object();
+    Object objAzul = new Object();
+    //lista de mensajes
+    private List<Producto> buffer;
+    //capacidad del buffer
+    private int capacidad;
+    private int tamanioBuffer;
+    private int contA;
+    private int contN;
+
+    public Buffer(int size) {
+        this.tamanioBuffer = size;
+        this.capacidad = size;
+        this.buffer = new LinkedList<Producto>();
+    }
+
+    public Buffer() {
+        this.tamanioBuffer = 999999;
+        this.buffer = new LinkedList<Producto>();
+    }
+
+    public synchronized boolean hayMensajes() {
+        return this.buffer.size() > 0;
+    }
+
+    public synchronized void insertarMensaje(ProcesoP proceso, Producto producto) {
+        if (proceso.getColor() == true) {//true naranja
+            synchronized (objNaranja) {
+                while (capacidad == 0) {
+                    try {
+                        proceso.sleep(500);//duda preguntar
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                this.contN++;
+                this.capacidad--;
+                this.buffer.add(producto);
+            }
+        }
+        if (proceso.getColor() == false) {//true azul
+            synchronized (objAzul) {
+                while (capacidad == 0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                this.contA++;
+                this.capacidad--;
+                this.buffer.add(producto);
+                notify();
+            }
+        }
+
+    }
+
+    public Producto obtenerMensaje(ProcesoP proceso) {
+        Producto productoElegido = null;
+        if (proceso.getColor() == true) {//es naranja
+            synchronized (objNaranja) {
+                while (this.capacidad == this.tamanioBuffer || contN == 0) {
+                    try {
+                        proceso.sleep(500);//duda preguntar
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                Boolean encontrado = false;
+                int i = 0;
+                while (i < this.buffer.size() && encontrado == false) {
+                    Producto producto = this.buffer.get(i);
+                    if (producto.isColor() == true) {
+                        encontrado = true;
+                        productoElegido = producto;
+                        this.buffer.remove(i);
+                        this.capacidad++;
+                    }
+                }
+            }
+        } else {// el color es azul
+            synchronized (objAzul) {
+                while (this.capacidad == this.tamanioBuffer || contA == 0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                Boolean encontrado = false;
+                int i = 0;
+                while (i < this.buffer.size() && encontrado == false) {
+                    Producto producto = this.buffer.get(i);
+                    if (producto.isColor() == false) {
+                        encontrado = true;
+                        productoElegido = producto;
+                        this.buffer.remove(i);
+                        this.capacidad++;
+                    }
+                }
+            }
+
+        }
+        return productoElegido;
+    }
+
+}
