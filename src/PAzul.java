@@ -1,5 +1,4 @@
 
-import java.security.Principal;
 import java.util.ArrayList;
 
 /*
@@ -69,6 +68,7 @@ public class PAzul extends ProcesoP {
                 else{//buffer 2 y 3 la 3 es solo final
                     for(int i = 0; i<num_productos;i++){
                         Producto producto=this.bufferIn.obtenerMensaje(this);
+                        System.out.println("Producto"+producto.getIdProducto()+"color"+producto.isColor());
                         this.bufferOut.insertarMensaje(this, producto);
                     }
                     

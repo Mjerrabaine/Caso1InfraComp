@@ -29,6 +29,7 @@ public class PFinal extends Thread {
                 System.out.println("El producto "+producto.getIdProducto()+" sale de produccion");
                 bufferFinal.getBuffer().remove(bufferFinal.getBuffer().size()-1);
             }
+            productosImpresos++;
         }
     }
 

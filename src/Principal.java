@@ -23,6 +23,8 @@ public class Principal {
         System.out.println("Por favor ingrese el numero de procesos por etapa");
         int numProcesos= Integer.parseInt(scanner.nextLine());
 
+        scanner.close();
+
         Buffer buffer1 = new Buffer(tamBuffers);
         Buffer buffer2 = new Buffer(tamBuffers);        
         Buffer bufferfinal = new Buffer();
@@ -34,45 +36,48 @@ public class Principal {
         int contadorId = 0;
         
         //Etapa 1
-        LinkedList lista1 = new LinkedList();
+        LinkedList<PAzul> lista1 = new LinkedList<PAzul>();
         var i = 0;
-        while(i<numProcesoA){
+        while(i<=numProcesoA){
             PAzul pAzul = new PAzul(contadorId, buffer1,productosAProducir,1);
             String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
             lista1.add(pAzul);
             contadorId++;
             pAzul.start();
+            i++;
         }
         
         PNaranja pN1 = new PNaranja(1, buffer1,1,1);
         pN1.start();
         
         //Etapa 2
-        LinkedList lista2 = new LinkedList();
+        LinkedList<PAzul> lista2 = new LinkedList<PAzul>();
         i = 0;
-        while(i<numProcesoA){
+        while(i<=numProcesoA){
             PAzul pAzul = new PAzul(contadorId, buffer1,buffer2, productosAProducir,2);
             String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
             lista2.add(pAzul);
             contadorId++;
             pAzul.start();
+            i++;
         }
         
         PNaranja pN2 = new PNaranja(2, buffer1,buffer2,1,2);
         pN2.start();
 
         //Etapa 3
-        LinkedList lista3 = new LinkedList();
+        LinkedList<PAzul> lista3 = new LinkedList<PAzul>();
         i = 0;
-        while(i<numProcesoA){
+        while(i<=numProcesoA){
             PAzul pAzul = new PAzul(contadorId, buffer2,bufferfinal,productosAProducir,3);
             String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
-            lista2.add(pAzul);
+            lista3.add(pAzul);
             contadorId++;
             pAzul.start();
+            i++;
         }
         
         PNaranja pN3 = new PNaranja(3, buffer2,bufferfinal ,1,3);
