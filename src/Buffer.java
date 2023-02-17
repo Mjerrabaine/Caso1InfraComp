@@ -115,7 +115,7 @@ public class Buffer {
                 synchronized (objAzul) {
                     while (this.capacidad == this.tamanioBuffer || contA == 0) {
                         try {
-                            wait();
+                            objAzul.wait();
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
