@@ -1,6 +1,7 @@
 
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.CyclicBarrier;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -12,6 +13,7 @@ import java.util.Scanner;
  * @author usuario
  */
 public class Principal {
+        private static CyclicBarrier barrera;
 
     public static void main(String[] args) {
         System.out.println("Bienvenido a la planta de produccion");
@@ -84,7 +86,8 @@ public class Principal {
         pN3.start();
         
         //Etapa Final
-        
+        System.out.println("llegue");
+        barrera = new CyclicBarrier(numProcesos+1);
         PFinal pFinal = new PFinal(1,bufferfinal, productosAProducir);  //CAMBIAR A QUE SEA BUFFER FINAL IMPRIMIR   
         pFinal.start();
         
