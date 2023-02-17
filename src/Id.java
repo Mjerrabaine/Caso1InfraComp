@@ -8,8 +8,9 @@
  * @author usuario
  */
 public class Id {
-    private int id ;
+    private int id = 0;
     public synchronized int darId(){
+        System.out.println("id: "+id);
         return id++;
     }        
          
