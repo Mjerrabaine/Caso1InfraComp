@@ -20,13 +20,16 @@ public abstract class ProcesoP extends Thread {
     
     public ArrayList<Producto> CrearProductos(int numProduct, boolean color){
         ArrayList<Producto> arregloProductos = new ArrayList<Producto>(numProduct);
-        System.out.println("numprod" +numProduct);
         for(int i = 0; i<numProduct; i++){
             Producto producto = new Producto(id.darId(), "Producto Sin Procesar", color);
             String concat = "producto" + i;
             producto.cambiarNombre(concat);
+            System.out.print("id producto desde el metodo crear: "+ producto.getIdProducto()+"\n");
             arregloProductos.add(producto);
         }
+        System.out.print("id producto 0 de la lista: "+ arregloProductos.get(0).getIdProducto()+"\n");
+        System.out.print("id producto 1 de la lista: "+ arregloProductos.get(1).getIdProducto()+"\n");
+        System.out.print("id producto 2 de la lista: "+ arregloProductos.get(2).getIdProducto()+"\n");
         return arregloProductos;
         
     }

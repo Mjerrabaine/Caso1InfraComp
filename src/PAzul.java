@@ -66,6 +66,7 @@ public class PAzul extends ProcesoP {
                     ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
                     for(int i = 0; i<arregloProductos.size();i++){
                         Producto producto1 = arregloProductos.get(i);
+                        System.out.print("id producto:"+producto1.getIdProducto()+"\n");
                         this.bufferInicial.insertarMensaje(this, producto1);
                     }
                 }

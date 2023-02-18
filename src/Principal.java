@@ -27,9 +27,9 @@ public class Principal {
 
         scanner.close();
 
-        Buffer buffer1 = new Buffer(tamBuffers);
-        Buffer buffer2 = new Buffer(tamBuffers);        
-        Buffer bufferfinal = new Buffer();
+        Buffer buffer1 = new Buffer(tamBuffers,1);
+        Buffer buffer2 = new Buffer(tamBuffers,2);        
+        Buffer bufferfinal = new Buffer(3);
         
         //numero de procesos por etapa
         int numProcesoA = numProcesos-1;

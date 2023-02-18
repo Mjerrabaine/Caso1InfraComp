@@ -12,7 +12,8 @@ import java.util.List;
 */
 public class Buffer {
     Object objNaranja = new Object();
-    Object objAzul = new Object();    
+    Object objAzul = new Object();
+    int id;
     
     //lista de mensajes
     private List<Producto> buffer;
@@ -26,15 +27,18 @@ public class Buffer {
         return buffer;
     }
     
-    public Buffer(int size) {
+    public Buffer(int size,int id) {
         this.tamanioBuffer = size;
         this.capacidad = size;
         this.buffer = new LinkedList<Producto>();
+        this.id=id;
     }
     
-    public Buffer() {
+    public Buffer(int id) {
+    	this.id=id;
         this.tamanioBuffer = 999999;
         this.buffer = new LinkedList<Producto>();
+        this.capacidad=999999;
     }
     
     public synchronized boolean hayMensajes() {
@@ -44,7 +48,6 @@ public class Buffer {
     
     public synchronized void insertarMensaje(ProcesoP proceso, Producto producto) {        
         if (proceso.getColor() == true) {//true naranja 
-            synchronized (objNaranja) {                    
                 while (capacidad == 0) {
                     try {
                         proceso.sleep(500);//duda preguntar .yield()
@@ -55,14 +58,18 @@ public class Buffer {
                         e.printStackTrace();
                     }
                 }
+                
                 this.contN++;
                 this.capacidad--; //Syncronized objeto capacidad
                 this.buffer.add(producto);
                 producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                 " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
-                " ha ingresado al buffer:");                
+                " ha ingresado al buffer:");     
+                System.out.print("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
+                        " de color: "+proceso.getColor()+" de la etapa: "+proceso.getEtapa()+
+                        " ha ingresado al buffer:"+this.id+"\n");
             }
-        }
+        
             else {//true azul
                 synchronized (objAzul) {
                     while (capacidad == 0) {
@@ -80,6 +87,9 @@ public class Buffer {
                     producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                     " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
                     " ha ingresado al buffer:");
+                    System.out.print("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
+                    " de color: "+proceso.getColor()+" de la etapa: "+proceso.getEtapa()+
+                    " ha ingresado al buffer:"+this.id+"\n");
                 }
             }
         }
@@ -87,7 +97,6 @@ public class Buffer {
         public Producto obtenerMensaje(ProcesoP proceso) {
             Producto productoElegido = null;
             if (proceso.getColor() == true) {//es naranja
-                synchronized (objNaranja) {
                     while (this.capacidad == this.tamanioBuffer || contN == 0) {
                         try {
                             proceso.sleep(500);//duda preguntar yield()
@@ -105,12 +114,15 @@ public class Buffer {
                             productoElegido = producto;
                             this.buffer.remove(i);
                             this.capacidad++; //Syncronized objeto capacidad
+                            this.contN--;
                         }
                     }
                     productoElegido.ModificarCadena("El producto:"+productoElegido.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                     " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
                     " ha ingresado al buffer:");
-                }
+                    System.out.print("El producto:"+productoElegido.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
+                    " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
+                    " ha salio del buffer:"+this.id+"\n");
             } else {// el color es azul
                 synchronized (objAzul) {
                     while (this.capacidad == this.tamanioBuffer || contA == 0) {
@@ -135,6 +147,9 @@ public class Buffer {
                     productoElegido.ModificarCadena("El producto:"+productoElegido.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                     " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
                     " ha ingresado al buffer:");
+                    System.out.print("El producto:"+productoElegido.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
+                            " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
+                            " ha salio del buffer:"+this.id);
                 }
                 
             }

@@ -12,7 +12,7 @@ public class Producto {
     private String cadena;
     private boolean color;
     private String nombre;
-    private static int idProducto;
+    private int idProducto;
 
     public Producto(int idProducto, String cadena, boolean color) {
         this.cadena = cadena;

@@ -53,10 +53,15 @@ public class PNaranja extends ProcesoP {
     public void run() {
 
         if (this.etapa == 1) {
-
             ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
+            System.out.print("el numero de productos creados es:"+arregloProductos.size());
+//            System.out.print("id producto 0 de la lista: "+ arregloProductos.get(0).getIdProducto()+"\n");
+//            System.out.print("id producto 1 de la lista: "+ arregloProductos.get(1).getIdProducto()+"\n");
+//            System.out.print("id producto 2 de la lista: "+ arregloProductos.get(2).getIdProducto()+"\n");
             for (int i = 0; i < arregloProductos.size(); i++) {
+            	
                 Producto producto1 = arregloProductos.get(i);
+                System.out.print("id del producto desde el thread: "+producto1.getIdProducto()+"\n");
                 this.bufferInicial.insertarMensaje(this, producto1);
             }
         } else {//buffer 2 y 3 la 3 es solo final
@@ -72,4 +77,5 @@ public class PNaranja extends ProcesoP {
     public int getEtapa() {
         return etapa;
     }
+    
 }
