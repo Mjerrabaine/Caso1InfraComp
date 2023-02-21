@@ -79,7 +79,7 @@ public class PAzul extends ProcesoP {
                         System.out.println("Desde PAzul run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se obtiene desde el buffer " + bufferIn.getBufferId());
 
                         this.bufferOut.insertarMensaje(this, producto);
-                        System.out.println("Desde PAzul run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se inserta en el buffer " + bufferIn.getBufferId());
+                        System.out.println("Desde PAzul run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se inserta en el buffer " + bufferOut.getBufferId());
                     }
                     
                 }
