@@ -89,6 +89,15 @@ public class Buffer {
         
         public Producto obtenerMensaje(ProcesoP proceso) {
             Producto productoElegido = null;
+            try {
+                //Random number between 50 and 500
+                int random = (int)(Math.random() * 500) + 50;
+                proceso.sleep(random);
+
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+
             if (proceso.getColor() == true) {//es naranja
                     while (this.capacidad == this.tamanioBuffer || contN == 0) {
                     	proceso.yield();
