@@ -61,12 +61,15 @@ public class PNaranja extends ProcesoP {
             for (int i = 0; i < arregloProductos.size(); i++) {
             	
                 Producto producto1 = arregloProductos.get(i);
-                System.out.print("id del producto desde el thread: "+producto1.getIdProducto()+"\n");
+                System.out.println("id del producto : "+producto1.getIdProducto()+ "desde el thread id : "+getPId());
                 this.bufferInicial.insertarMensaje(this, producto1);
             }
         } else {//buffer 2 y 3 la 3 es solo final
             for (int i = 0; i < num_productos; i++) {
-                Producto producto = this.bufferIn.obtenerMensaje(this);
+                Producto producto = this.bufferIn.obtenerMensaje(this);                
+                if (producto.isColor() == true)
+                    System.out.println("El producto es naranja");                
+                System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
                 this.bufferOut.insertarMensaje(this, producto);
             }
 

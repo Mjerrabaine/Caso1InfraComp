@@ -58,7 +58,7 @@ public class Buffer {
                 producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                 " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
                 " ha ingresado al buffer:");     
-                System.out.print("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
+                System.out.println("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                         " de color: "+proceso.getColor()+" de la etapa: "+proceso.getEtapa()+
                         " ha ingresado al buffer:"+this.id+"\n");
             }
@@ -80,7 +80,7 @@ public class Buffer {
                     producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                     " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
                     " ha ingresado al buffer:");
-                    System.out.print("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
+                    System.out.println("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                     " de color: "+proceso.getColor()+" de la etapa: "+proceso.getEtapa()+
                     " ha ingresado al buffer:"+this.id+"\n");
                 }
@@ -113,7 +113,7 @@ public class Buffer {
                     " ha salio del buffer:"+this.id+"\n");
             } else {// el color es azul
                 synchronized (objAzul) {
-                	System.out.println("entre a obtener azul");
+                	//System.out.println("entre a obtener azul");
                     while (this.capacidad == this.tamanioBuffer || contA == 0) {
                         try {
                             objAzul.wait();
