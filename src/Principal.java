@@ -13,12 +13,7 @@ import java.util.concurrent.Flow.Subscriber;
 *
 * @author usuario
 */
-public class Principal {
-    private static CyclicBarrier barrera;
-    
-    private static CyclicBarrier barrera1; //ETAPA 1
-    private static CyclicBarrier barrera2; //ETAPA 2
-    private static CyclicBarrier barrera3; //ETAPA 3
+public class Principal {    
     
     public static void main(String[] args) {
         System.out.println("Bienvenido a la planta de produccion");
@@ -60,8 +55,7 @@ public class Principal {
         pN1.start();
 
         System.out.println("Proceso Naranja en etapa 1 " + pN1);
-        
-        //barrera1 = new CyclicBarrier((numProcesos*3)+1);
+            
         
         //Etapa 2
         LinkedList<PAzul> lista2 = new LinkedList<PAzul>();
@@ -80,8 +74,7 @@ public class Principal {
         PNaranja pN2 = new PNaranja(2, buffer1,buffer2,productosAProducir,2);
         pN2.start();
         System.out.println("Proceso Naranja en etapa 2" + pN2);
-        
-        //barrera2 = new CyclicBarrier((numProcesos*3)+1);
+                
         
         //Etapa 3
         LinkedList<PAzul> lista3 = new LinkedList<PAzul>();
@@ -100,28 +93,23 @@ public class Principal {
         PNaranja pN3 = new PNaranja(3, buffer2,bufferfinal ,productosAProducir,3);
         pN3.start();
         System.out.println("Proceso Naranja en etapa 3" + pN3);
-
-        //barrera3 = new CyclicBarrier((numProcesos*3)+1);
+        
         
         //Etapa Final
-        barrera = new CyclicBarrier((numProcesos*3)+1);
-        System.out.println("Barrera" + barrera);
-        System.out.println("Numero de procesos en la barrera: "+ barrera.getNumberWaiting());
 
-        System.out.println("Se rompio la barrera? "+ barrera.isBroken());
+        System.out.println("Numero de productos que deberian salir de produccion: " + productosAProducir*numProductos);
 
-        System.out.println("Procesos en el buffer final: "+ bufferfinal.getBuffer());
-        System.out.println("Número de procesos en el buffer final: " + bufferfinal.getBuffer().size());
-        try {
-            barrera.await();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        PFinal pFinal = new PFinal(1,bufferfinal, productosAProducir*numProcesos,numProcesos);  //CAMBIAR A QUE SEA BUFFER FINAL IMPRIMIR   
-        
-        System.out.println("Proceso Final se llama al start ");
+        //Numero de productos en el buffer final
+        System.out.println("Numero de productos en el buffer final: " + bufferfinal.getBuffer().size());
+
+       if (bufferfinal.getBuffer().size() == productosAProducir*numProcesos)
+            System.out.println("La produccion fue exitosa");
+
+        PFinal pFinal = new PFinal(1,bufferfinal, productosAProducir*numProcesos,numProcesos);          
+        System.out.println("Proceso Final llama al start ");
         pFinal.start();
-        
+        System.out.println("Proceso Final esta vivo? " + pFinal.isAlive());
+                
     }
     
 }

@@ -39,7 +39,7 @@ public class PFinal extends Thread {
                 System.out.println("Ultimo producto en buffer final: " + producto.getIdProducto());
                 
                 bufferFinal.getBuffer().remove(bufferFinal.getBuffer().size() - 1);
-                System.out.println("El producto " + producto.getIdProducto() + "sale de produccion. Es removido del buffer\n");
+                System.out.println("El producto " + producto.getIdProducto() + " sale de produccion. Es removido del buffer\n");
                 
                 productosImpresos++;
             }
@@ -48,6 +48,7 @@ public class PFinal extends Thread {
     }
 
     public void run() {        
+
         this.imprimirMensaje();
         System.out.println("Se llama al metodo imprimirMensaje() desde PFinal"); 
     }
