@@ -53,24 +53,24 @@ public class PNaranja extends ProcesoP {
     public void run() {
 
         if (this.etapa == 1) {
+            System.out.println("PNaranja Etapa 1");
             ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
-            System.out.print("el numero de productos creados es:"+arregloProductos.size());
-//            System.out.print("id producto 0 de la lista: "+ arregloProductos.get(0).getIdProducto()+"\n");
-//            System.out.print("id producto 1 de la lista: "+ arregloProductos.get(1).getIdProducto()+"\n");
-//            System.out.print("id producto 2 de la lista: "+ arregloProductos.get(2).getIdProducto()+"\n");
-            for (int i = 0; i < arregloProductos.size(); i++) {
-            	
+            System.out.println("Se crearon los productos naranjas + " + arregloProductos);
+
+            for (int i = 0; i < arregloProductos.size(); i++) {            	
                 Producto producto1 = arregloProductos.get(i);
-                System.out.println("id del producto : "+producto1.getIdProducto()+ "desde el thread id : "+getPId());
+
                 this.bufferInicial.insertarMensaje(this, producto1);
+                System.out.println("Desde PNaranja run() El producto "+producto1.getIdProducto()+" de color: "+((producto1.isColor()) ? " Naranja ": " Azul ")+ "Se confirma que se inserto en el buffer de la etapa 1");            
             }
         } else {//buffer 2 y 3 la 3 es solo final
+            System.out.println("PNaranja Etapa 2 o 3");
             for (int i = 0; i < num_productos; i++) {
-                Producto producto = this.bufferIn.obtenerMensaje(this);                
-                if (producto.isColor() == true)
-                    System.out.println("El producto es naranja");                
-                System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
-                this.bufferOut.insertarMensaje(this, producto);
+                Producto producto = this.bufferIn.obtenerMensaje(this);   
+                System.out.println("Desde PNaranja run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se obtiene desde el buffer " + bufferIn.getBufferId());
+                                               
+                this.bufferOut.insertarMensaje(this, producto);                
+                System.out.println("Desde PNaranja run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se inserta en el buffer " + bufferIn.getBufferId());
             }
 
         }

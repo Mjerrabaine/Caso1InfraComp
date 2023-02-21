@@ -2,6 +2,7 @@
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Flow.Subscriber;
 
 /*
 * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -38,22 +39,27 @@ public class Principal {
         //numero de procesos por etapa
         int numProcesoA = numProcesos-1;
         int productosAProducir = numProductos;
-        //lleva la cuenta de los ids
-        int contadorId = 0;
+        //lleva la cuenta de los ids de los procesos. Empieza en 1
+        int contadorId = 1;
         
         //Etapa 1
         LinkedList<PAzul> lista1 = new LinkedList<PAzul>();
         var i = 0;
         while(i<numProcesoA){
-            PAzul pAzul = new PAzul(contadorId, buffer1,productosAProducir,1);            String concat = "PAzul" + i;
+            PAzul pAzul = new PAzul(contadorId, buffer1,productosAProducir,1);            
+            String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
             lista1.add(pAzul);
             contadorId++;
             pAzul.start();
             i++;
         }
+        System.out.println("Procesos Azules en etapa 1 " + lista1);
+
         PNaranja pN1 = new PNaranja(1, buffer1,productosAProducir,1);
         pN1.start();
+
+        System.out.println("Proceso Naranja en etapa 1 " + pN1);
         
         //barrera1 = new CyclicBarrier((numProcesos*3)+1);
         
@@ -69,9 +75,11 @@ public class Principal {
             pAzul.start();
             i++;
         }
-        
+        System.out.println("Procesos Azules en etapa 2" + lista2);
+
         PNaranja pN2 = new PNaranja(2, buffer1,buffer2,productosAProducir,2);
         pN2.start();
+        System.out.println("Proceso Naranja en etapa 2" + pN2);
         
         //barrera2 = new CyclicBarrier((numProcesos*3)+1);
         
@@ -87,15 +95,31 @@ public class Principal {
             pAzul.start();
             i++;
         }
-        
+        System.out.println("Procesos Azules en etapa 3" + lista3);
+
         PNaranja pN3 = new PNaranja(3, buffer2,bufferfinal ,productosAProducir,3);
         pN3.start();
-        
+        System.out.println("Proceso Naranja en etapa 3" + pN3);
+
         //barrera3 = new CyclicBarrier((numProcesos*3)+1);
         
         //Etapa Final
         barrera = new CyclicBarrier((numProcesos*3)+1);
+        System.out.println("Barrera" + barrera);
+        System.out.println("Numero de procesos en la barrera: "+ barrera.getNumberWaiting());
+
+        System.out.println("Se rompio la barrera? "+ barrera.isBroken());
+
+        System.out.println("Procesos en el buffer final: "+ bufferfinal.getBuffer());
+        System.out.println("Número de procesos en el buffer final: " + bufferfinal.getBuffer().size());
+        try {
+            barrera.await();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         PFinal pFinal = new PFinal(1,bufferfinal, productosAProducir*numProcesos,numProcesos);  //CAMBIAR A QUE SEA BUFFER FINAL IMPRIMIR   
+        
+        System.out.println("Proceso Final se llama al start ");
         pFinal.start();
         
     }

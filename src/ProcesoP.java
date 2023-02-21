@@ -21,6 +21,7 @@ public abstract class ProcesoP extends Thread {
     }
     
     public ArrayList<Producto> CrearProductos(int numProduct, boolean color){
+        System.out.println("Creando productos desde ProcesoP");
         ArrayList<Producto> arregloProductos = new ArrayList<Producto>(numProduct);
         for(int i = 0; i<numProduct; i++){
             Producto producto = new Producto(id.darId(), "Producto Sin Procesar", color);
@@ -29,14 +30,13 @@ public abstract class ProcesoP extends Thread {
             arregloProductos.add(producto);
             productosVerificar.add(producto); //LINEA DE CODIGO TEMPORAL
 
-            System.out.println("Se creo el producto: "+  "id: "+ producto.getIdProducto() + " y color: "+ producto.isColor()); 
+            System.out.println("Se creo el producto: "+  "id: "+ producto.getIdProducto()  +" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Invocado por el proceso id: " + this.getPId());
 
         }
-            System.out.println("Arreglo de productos: "+ productosVerificar);
-
-        //        System.out.print("id producto 0 de la lista: "+ arregloProductos.get(0).getIdProducto()+"\n");
-        //        System.out.print("id producto 1 de la lista: "+ arregloProductos.get(1).getIdProducto()+"\n");
-        //        System.out.print("id producto 2 de la lista: "+ arregloProductos.get(2).getIdProducto()+"\n");
+            // for (Producto productoV : productosVerificar) {
+            //     System.out.println("Arreglo de productos desde CrearProductos ProcesoP:  "+ productoV.getIdProducto());
+            // }
+            
         return arregloProductos;
         
     }

@@ -62,21 +62,24 @@ public class PAzul extends ProcesoP {
                 //        }
                 //threads etapa 1
                 if (this.etapa == 1) {
-                    
+                    System.out.println("PAzul Etapa 1");
                     ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
+                    System.out.println("Se crearon los productos azules + " + arregloProductos);
+
                     for(int i = 0; i<arregloProductos.size();i++){
-                        Producto producto1 = arregloProductos.get(i);
-                        System.out.println("id del producto : "+producto1.getIdProducto()+ "desde el thread id : "+getPId());
+                        Producto producto1 = arregloProductos.get(i);                        
                         this.bufferInicial.insertarMensaje(this, producto1);
+                        System.out.println("Desde PAzul run() El producto "+producto1.getIdProducto()+" de color: "+((producto1.isColor()) ? " Naranja ": " Azul ")+ "Se confirma que se inserto en el buffer de la etapa 1");
                     }
                 }
                 else{//buffer 2 y 3 la 3 es solo final
+                    System.out.println("PAzul Etapa 2 o 3");
                     for(int i = 0; i<num_productos;i++){
                         Producto producto=this.bufferIn.obtenerMensaje(this);
-                        if (producto.isColor() == false)
-                        System.out.println("El producto es azul");     
-                        System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
+                        System.out.println("Desde PAzul run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se obtiene desde el buffer " + bufferIn.getBufferId());
+
                         this.bufferOut.insertarMensaje(this, producto);
+                        System.out.println("Desde PAzul run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se inserta en el buffer " + bufferIn.getBufferId());
                     }
                     
                 }
