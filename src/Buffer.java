@@ -49,7 +49,7 @@ public class Buffer {
     
     
     public void insertarMensaje(ProcesoP proceso, Producto producto) {
-    	System.out.println("el producto :"+producto.getIdProducto()+"entro a insertar en el buffer"+this.id);
+    	
 
         if (proceso.getColor() == true) {//true naranja 
                 while (getCapacidad() == 0) {
@@ -57,8 +57,9 @@ public class Buffer {
                 	proceso.yield();
                 }
                 
-                this.buffer.add(producto);
+                
                 synchronized (objCapacidad) {
+                	this.buffer.add(producto);
                     this.contN++;
                     this.capacidad--; //Syncronized objeto capacidad
 				}
@@ -73,17 +74,20 @@ public class Buffer {
         
             else {//true azul
                 synchronized (objAzulInsertar) {
+                	
                     while (getCapacidad() == 0) {
                         try {
-//                        	System.out.println("el producto azul:"+producto.getIdProducto()+"entro a esperar para insertar");
+                        	System.out.println("el producto azul:"+producto.getIdProducto()+"entro a esperar para insertar");
                         	objAzulInsertar.wait();
+                        	System.out.println("el producto :"+producto.getIdProducto()+" se desperto "+this.id);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
-                    this.buffer.add(producto);
+                    
                     synchronized (objCapacidad) {
+                    	this.buffer.add(producto);
                         this.contA++;
                         this.capacidad--; //Syncronized objeto capacidad
 					}
@@ -148,6 +152,7 @@ public class Buffer {
                             e.printStackTrace();
                         }
                     }
+                    synchronized (objCapacidad) {
                     Boolean encontrado = false;
                     int i = 0;
                     while (i < this.buffer.size() && encontrado == false) {
@@ -156,7 +161,7 @@ public class Buffer {
                             encontrado = true;
                             productoElegido = producto;
                             this.buffer.remove(i);
-                            synchronized (objCapacidad) {
+                            
                                 this.capacidad++; //Syncronized objeto capacidad
                                 this.contA--;
 							}
@@ -173,10 +178,11 @@ public class Buffer {
                             " ha salio del buffer:"+this.id);
                 
                 }
-                synchronized (objAzulInsertar) {
-                	objAzulInsertar.notify();
-                }
                 
+                
+            }
+            synchronized (objAzulInsertar) {
+            	objAzulInsertar.notify();
             }
             return productoElegido;
         }
