@@ -63,11 +63,15 @@ public class PAzul extends ProcesoP {
                 ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
                 System.out.println("Se crearon los productos azules + " + arregloProductos);
                 
+                
+
                 for(int i = 0; i<arregloProductos.size();i++){
                     Producto producto1 = arregloProductos.get(i);                        
                     this.bufferInicial.insertarMensaje(this, producto1);
+                             
+                    System.out.println("Buffer inicial actualizado: " + this.bufferInicial.getBuffer());
                     System.out.println("Desde PAzul run() El producto "+producto1.getIdProducto()+" de color: "+((producto1.isColor()) ? " Naranja ": " Azul ")+ "Se confirma que se inserto en el buffer de la etapa 1");
-                }
+                }            
             }
             else{//buffer 2 y 3 la 3 es solo final
                 System.out.println("PAzul Etapa 2 o 3");

@@ -117,8 +117,8 @@ public class Buffer {
 							}
 						}
 
-						// System.out.println(" Se hace notify obtener mensaje");
-						// objAzul.notify();
+						System.out.println(" Se hace notify obtener mensaje");
+						objAzul.notify();
 						
 						productoElegido.ModificarCadena("El producto:"+productoElegido.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
 						" de color: "+((proceso.getColor()) ? " Naranja ": " Azul ") +" de la etapa: "+proceso.getEtapa()+
@@ -134,7 +134,7 @@ public class Buffer {
 			}
 			
 			
-	public synchronized void insertarMensaje(ProcesoP proceso, Producto producto) {  
+	public void insertarMensaje(ProcesoP proceso, Producto producto) {  
 		System.out.println("Insertar mensaje");
 		if (proceso.getColor() == true) {//true naranja 
 			System.out.println("El producto es naranja ");
