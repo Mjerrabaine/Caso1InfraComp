@@ -1,16 +1,18 @@
 
 import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 /*
 * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+*/
 /**
- *
- * @author usuario
- */
+*
+* @author usuario
+*/
 public class PNaranja extends ProcesoP {
-
+    
     private int id;
     private Buffer bufferInicial;
     private Buffer bufferIn;
@@ -18,48 +20,51 @@ public class PNaranja extends ProcesoP {
     private int num_productos;
     private final boolean COLOR = true;
     private int etapa;
-
+    private CyclicBarrier barrera;
+    
     //Constructor para los threads de la etapa 1, solo necesitan 1 buffer
-    public PNaranja(int id, Buffer buffer, int num_productos, int etapa) {
+    public PNaranja(int id, Buffer buffer, int num_productos, int etapa,CyclicBarrier barrera) {
         this.etapa = etapa;
         this.bufferInicial = buffer;
         this.id = id;
         this.num_productos = num_productos;
+        this.barrera=barrera;
     }
-
-    public PNaranja(int id, Buffer bufferIn, Buffer bufferOut, int num_productos, int etapa) {
+    
+    public PNaranja(int id, Buffer bufferIn, Buffer bufferOut, int num_productos, int etapa,CyclicBarrier barrera) {
         this.etapa = etapa;
         this.bufferIn = bufferIn;
         this.bufferOut = bufferOut;
         this.id = id;
         this.num_productos = num_productos;
+        this.barrera=barrera;
     }
-
+    
     public int getPId() {
         return id;
     }
-
+    
     public void imprimirMensaje(String mensaje) {
         //mostrar el Mensaje que obtuvimos
         String prot = "El consumidor %d recupero el mensaje %s: ";// darle formato a las variables
         System.out.println(String.format(prot, this.id, mensaje));
     }
-
+    
     @Override
     public boolean getColor() {
         return this.COLOR;
     }
-
+    
     public void run() {
-
+        
         if (this.etapa == 1) {
             System.out.println("PNaranja Etapa 1");
             ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
             System.out.println("Se crearon los productos naranjas + " + arregloProductos);
-
+            
             for (int i = 0; i < arregloProductos.size(); i++) {            	
                 Producto producto1 = arregloProductos.get(i);
-
+                
                 this.bufferInicial.insertarMensaje(this, producto1);
                 System.out.println("Desde PNaranja run() El producto "+producto1.getIdProducto()+" de color: "+((producto1.isColor()) ? " Naranja ": " Azul ")+ "Se confirma que se inserto en el buffer de la etapa 1");            
             }
@@ -68,14 +73,24 @@ public class PNaranja extends ProcesoP {
             for (int i = 0; i < num_productos; i++) {
                 Producto producto = this.bufferIn.obtenerMensaje(this);   
                 System.out.println("Desde PNaranja run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se obtiene desde el buffer " + bufferIn.getBufferId());
-                                               
+                
                 this.bufferOut.insertarMensaje(this, producto);                
                 System.out.println("Desde PNaranja run() El producto "+producto.getIdProducto()+" de color: "+((producto.isColor()) ? " Naranja ": " Azul ")+ "Se inserta en el buffer " + bufferOut.getBufferId());
             }
-
+            
+        }
+        System.out.println("El thread: "+this.id+" termino");
+        try {
+            barrera.await();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
-
+    
     @Override
     public int getEtapa() {
         return etapa;
