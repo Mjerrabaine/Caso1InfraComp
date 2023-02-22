@@ -116,6 +116,9 @@ public class Buffer {
 								this.contA--;
 							}
 						}
+
+						// System.out.println(" Se hace notify obtener mensaje");
+						// objAzul.notify();
 						
 						productoElegido.ModificarCadena("El producto:"+productoElegido.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
 						" de color: "+((proceso.getColor()) ? " Naranja ": " Azul ") +" de la etapa: "+proceso.getEtapa()+
@@ -173,7 +176,7 @@ public class Buffer {
 				this.contA++;
 				this.capacidad--; //Syncronized objeto capacidad
 						
-				System.out.println(" Se hace notify");
+				System.out.println(" Se hace notify insertar mensaje");
 				objAzul.notify();
 						
 				producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
