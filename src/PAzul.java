@@ -1,5 +1,7 @@
 
 import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 /*
 * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,25 +20,28 @@ public class PAzul extends ProcesoP {
     private int num_productos;
     private final boolean COLOR = false; //COLOR DE PROCESO AZUL ES FALSO SIEMPRE
     private int etapa;
+    private CyclicBarrier barrera;
     
     //Constructor para los threads de la etapa 1, solo necesitan 1 buffer
-    public PAzul(int id, Buffer buffer, int num_productos, int etapa) {
+    public PAzul(int id, Buffer buffer, int num_productos, int etapa,CyclicBarrier barrera) {
         this.etapa = etapa;
         this.bufferInicial = buffer;
         this.id = id;
         this.num_productos = num_productos;
+        this.barrera=barrera;
     }
 
     public int getPId() {
         return id;
     }
     
-    public PAzul(int id, Buffer bufferIn, Buffer bufferOut, int num_productos, int etapa) {
+    public PAzul(int id, Buffer bufferIn, Buffer bufferOut, int num_productos, int etapa,CyclicBarrier barrera) {
         this.etapa = etapa;
         this.bufferIn = bufferIn;
         this.bufferOut = bufferOut;
         this.id = id;
         this.num_productos = num_productos;
+        this.barrera=barrera;
     }
     
     //    private void enviarMensaje(int i) {
@@ -64,6 +69,7 @@ public class PAzul extends ProcesoP {
                 if (this.etapa == 1) {
                     
                     ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
+//                    System.out.println("los productos azules creados son:"+arregloProductos.size());
                     for(int i = 0; i<arregloProductos.size();i++){
                         Producto producto1 = arregloProductos.get(i);
                         System.out.println("id del producto : "+producto1.getIdProducto()+ "desde el thread id : "+getPId());
@@ -74,13 +80,22 @@ public class PAzul extends ProcesoP {
                     for(int i = 0; i<num_productos;i++){
                         Producto producto=this.bufferIn.obtenerMensaje(this);
                         if (producto.isColor() == false)
-                        System.out.println("El producto es azul");     
-                        System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
+//                        System.out.println("El producto es azul");     
+//                        System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
                         this.bufferOut.insertarMensaje(this, producto);
                     }
                     
                 }
-                
+                System.out.print("El thread: "+this.id+" termino");
+                try {
+					barrera.await();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BrokenBarrierException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 
                 
             }

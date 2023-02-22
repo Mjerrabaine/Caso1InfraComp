@@ -1,5 +1,7 @@
 
 import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 /*
 * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,21 +20,24 @@ public class PNaranja extends ProcesoP {
     private int num_productos;
     private final boolean COLOR = true;
     private int etapa;
+    private CyclicBarrier barrera;
 
     //Constructor para los threads de la etapa 1, solo necesitan 1 buffer
-    public PNaranja(int id, Buffer buffer, int num_productos, int etapa) {
+    public PNaranja(int id, Buffer buffer, int num_productos, int etapa,CyclicBarrier barrera) {
         this.etapa = etapa;
         this.bufferInicial = buffer;
         this.id = id;
         this.num_productos = num_productos;
+        this.barrera=barrera;
     }
 
-    public PNaranja(int id, Buffer bufferIn, Buffer bufferOut, int num_productos, int etapa) {
+    public PNaranja(int id, Buffer bufferIn, Buffer bufferOut, int num_productos, int etapa,CyclicBarrier barrera) {
         this.etapa = etapa;
         this.bufferIn = bufferIn;
         this.bufferOut = bufferOut;
         this.id = id;
         this.num_productos = num_productos;
+        this.barrera=barrera;
     }
 
     public int getPId() {
@@ -54,7 +59,7 @@ public class PNaranja extends ProcesoP {
 
         if (this.etapa == 1) {
             ArrayList<Producto> arregloProductos = this.CrearProductos(this.num_productos, this.COLOR);
-            System.out.print("el numero de productos creados es:"+arregloProductos.size());
+//            System.out.println("el numero de naranjas productos creados es:"+arregloProductos.size());
 //            System.out.print("id producto 0 de la lista: "+ arregloProductos.get(0).getIdProducto()+"\n");
 //            System.out.print("id producto 1 de la lista: "+ arregloProductos.get(1).getIdProducto()+"\n");
 //            System.out.print("id producto 2 de la lista: "+ arregloProductos.get(2).getIdProducto()+"\n");
@@ -68,12 +73,23 @@ public class PNaranja extends ProcesoP {
             for (int i = 0; i < num_productos; i++) {
                 Producto producto = this.bufferIn.obtenerMensaje(this);                
                 if (producto.isColor() == true)
-                    System.out.println("El producto es naranja");                
-                System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
+//                    System.out.println("El producto es naranja");                
+//                System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
                 this.bufferOut.insertarMensaje(this, producto);
             }
 
         }
+        System.out.println("El thread: "+this.id+" termino");
+        try {
+			barrera.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BrokenBarrierException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
     }
 
     @Override

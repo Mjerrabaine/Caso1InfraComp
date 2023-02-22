@@ -1,6 +1,7 @@
 
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 /*
@@ -15,9 +16,7 @@ import java.util.concurrent.CyclicBarrier;
 public class Principal {
     private static CyclicBarrier barrera;
     
-    private static CyclicBarrier barrera1; //ETAPA 1
-    private static CyclicBarrier barrera2; //ETAPA 2
-    private static CyclicBarrier barrera3; //ETAPA 3
+
     
     public static void main(String[] args) {
         System.out.println("Bienvenido a la planta de produccion");
@@ -35,6 +34,8 @@ public class Principal {
         Buffer buffer2 = new Buffer(tamBuffers,2);        
         Buffer bufferfinal = new Buffer(3);
         
+        
+        barrera=new CyclicBarrier((numProcesos*3)+1);
         //numero de procesos por etapa
         int numProcesoA = numProcesos-1;
         int productosAProducir = numProductos;
@@ -45,14 +46,15 @@ public class Principal {
         LinkedList<PAzul> lista1 = new LinkedList<PAzul>();
         var i = 0;
         while(i<numProcesoA){
-            PAzul pAzul = new PAzul(contadorId, buffer1,productosAProducir,1);            String concat = "PAzul" + i;
+            PAzul pAzul = new PAzul(contadorId, buffer1,productosAProducir,1,barrera); 
+            String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
             lista1.add(pAzul);
             contadorId++;
             pAzul.start();
             i++;
         }
-        PNaranja pN1 = new PNaranja(1, buffer1,productosAProducir,1);
+        PNaranja pN1 = new PNaranja(1, buffer1,productosAProducir,1,barrera);
         pN1.start();
         
         //barrera1 = new CyclicBarrier((numProcesos*3)+1);
@@ -61,7 +63,7 @@ public class Principal {
         LinkedList<PAzul> lista2 = new LinkedList<PAzul>();
         i = 0;
         while(i<numProcesoA){
-            PAzul pAzul = new PAzul(contadorId, buffer1,buffer2, productosAProducir,2);
+            PAzul pAzul = new PAzul(contadorId, buffer1,buffer2, productosAProducir,2,barrera);
             String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
             lista2.add(pAzul);
@@ -70,7 +72,7 @@ public class Principal {
             i++;
         }
         
-        PNaranja pN2 = new PNaranja(2, buffer1,buffer2,productosAProducir,2);
+        PNaranja pN2 = new PNaranja(contadorId, buffer1,buffer2,productosAProducir,2,barrera);
         pN2.start();
         
         //barrera2 = new CyclicBarrier((numProcesos*3)+1);
@@ -79,7 +81,7 @@ public class Principal {
         LinkedList<PAzul> lista3 = new LinkedList<PAzul>();
         i = 0;
         while(i<numProcesoA){
-            PAzul pAzul = new PAzul(contadorId, buffer2,bufferfinal,productosAProducir,3);
+            PAzul pAzul = new PAzul(contadorId, buffer2,bufferfinal,productosAProducir,3,barrera);
             String concat = "PAzul" + i;
             pAzul.cambiarNombre(concat);
             lista3.add(pAzul);
@@ -88,14 +90,19 @@ public class Principal {
             i++;
         }
         
-        PNaranja pN3 = new PNaranja(3, buffer2,bufferfinal ,productosAProducir,3);
+        PNaranja pN3 = new PNaranja(3, buffer2,bufferfinal ,productosAProducir,3,barrera);
         pN3.start();
-        
-        //barrera3 = new CyclicBarrier((numProcesos*3)+1);
-        
-        //Etapa Final
-        barrera = new CyclicBarrier((numProcesos*3)+1);
-        PFinal pFinal = new PFinal(1,bufferfinal, productosAProducir*numProcesos,numProcesos);  //CAMBIAR A QUE SEA BUFFER FINAL IMPRIMIR   
+        try {
+			barrera.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BrokenBarrierException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        System.out.println("PASE LA BARRERA");
+        PFinal pFinal = new PFinal(1,bufferfinal, productosAProducir,numProcesos);  //CAMBIAR A QUE SEA BUFFER FINAL IMPRIMIR   
         pFinal.start();
         
     }

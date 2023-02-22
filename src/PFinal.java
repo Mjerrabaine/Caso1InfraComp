@@ -26,12 +26,17 @@ public class PFinal extends Thread {
 
     public void imprimirMensaje() {
         int productosImpresos = 0;
-        System.out.println("num prod buff 3" +this.productos);
+        System.out.println("num prod buff 3: " +this.bufferFinal.getBuffer().get(0));
         for(int i = 0; i<bufferFinal.getBuffer().size();i++) {
         	System.out.println("Producto en buffer final" + bufferFinal.getBuffer().get(i)+ "\n");
         }
-        while (productosImpresos < this.productos*this.procesos) {
+        System.out.println("productos*procesos:"+this.procesos*this.productos);
+        System.out.println("productos en el buffer:"+bufferFinal.getBuffer().size());
+        while (productosImpresos < (this.productos*this.procesos)) {
+        	//System.out.println("entre al while de imprimir mensaje");
+        	
             if (bufferFinal.getBuffer().size() > 0) {
+            	System.out.println("entre al if de imprimir mensaje");
                 Producto producto = bufferFinal.getBuffer().get(bufferFinal.getBuffer().size() - 1);
                 System.out.println("El producto " + producto.getIdProducto() + " sale de produccion\n");
                 bufferFinal.getBuffer().remove(bufferFinal.getBuffer().size() - 1);
