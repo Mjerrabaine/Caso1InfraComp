@@ -54,13 +54,19 @@ public class Buffer {
         if (proceso.getColor() == true) {//true naranja 
                 while (getCapacidad() == 0) {
 //                	System.out.println("el producto naranja:"+producto.getIdProducto()+"entro a esperar para insertar");
-                	proceso.yield();
+                	try {
+						proceso.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
                 
                 
                 synchronized (objCapacidad) {
                 	this.buffer.add(producto);
                     this.contN++;
+
                     this.capacidad--; //Syncronized objeto capacidad
 				}
 
@@ -74,12 +80,12 @@ public class Buffer {
         
             else {//true azul
                 synchronized (objAzulInsertar) {
-                	
                     while (getCapacidad() == 0) {
                         try {
-                        	System.out.println("el producto azul:"+producto.getIdProducto()+"entro a esperar para insertar");
+                        	System.out.println("el thread azul:"+proceso.getPId()+"del producto: "+producto.getIdProducto()+"entro a esperar en la cola de objAzulInsertar para insertar en el buffer"+
+                        this.id);
                         	objAzulInsertar.wait();
-                        	System.out.println("el producto :"+producto.getIdProducto()+" se desperto "+this.id);
+                        	System.out.println("el thread :"+proceso.getPId()+"del producto "+producto.getIdProducto()+" se desperto de la cola de ObjInsertar "+this.id);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -92,7 +98,7 @@ public class Buffer {
                         this.capacidad--; //Syncronized objeto capacidad
 					}
                     
-                    producto.ModificarCadena("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
+                    producto.ModificarCadena("El proceso:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
                     " de color: "+proceso.getColor()+" del proceso: "+proceso.getEtapa()+
                     " ha ingresado al buffer:");
                     System.out.println("El producto:"+producto.getIdProducto()+" asociado al proceso: "+proceso.getPId()+
@@ -100,6 +106,8 @@ public class Buffer {
                     " ha ingresado al buffer:"+this.id+"\n");
                 }
                 synchronized (objAzulObtener) {
+                	System.out.println("el thread "+proceso.getPId()+ "va a despertar a un thread de la cola objAzulObtener del buffer "+
+                this.id);
                 	objAzulObtener.notify();
                 }
             }
@@ -117,9 +125,17 @@ public class Buffer {
             }
 
             if (proceso.getColor() == true) {//es naranja
+                System.out.println("contN: "+contN);
                     while ( getCapacidad()== this.tamanioBuffer || contN == 0) {
-                    	proceso.yield();
+                    	try {
+                    		System.out.println("el naranja esta esperando");
+							proceso.sleep(500);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                     }
+                    synchronized (objCapacidad) {
                     Boolean encontrado = false;
                     int i = 0;
                     while (i < this.buffer.size() && encontrado == false) {
@@ -128,7 +144,7 @@ public class Buffer {
                             encontrado = true;
                             productoElegido = producto;
                             this.buffer.remove(i);
-                            synchronized (objCapacidad) {
+                            
                                 this.capacidad++; //Syncronized objeto capacidad
                                 this.contN--;
 							}
@@ -146,7 +162,10 @@ public class Buffer {
                 	//System.out.println("entre a obtener azul");
                     while (getCapacidad()== this.tamanioBuffer || contA == 0) {
                         try {
+                        	System.out.println("el proceso azul: "+proceso.getPId()+" entro a esperar en la cola de objAzulObtener para obtener del buffer"+
+                        this.id);
                             objAzulObtener.wait();
+                            System.out.println("el proceso azul:"+proceso.getPId()+" se desperto de la cola de ObjAzulInsertar "+this.id);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -182,6 +201,7 @@ public class Buffer {
                 
             }
             synchronized (objAzulInsertar) {
+            	System.out.println("el thread :"+proceso.getPId()+" va a despertar un thread de la cola de ObjInsertar "+this.id);
             	objAzulInsertar.notify();
             }
             return productoElegido;

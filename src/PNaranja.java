@@ -72,7 +72,7 @@ public class PNaranja extends ProcesoP {
         } else {//buffer 2 y 3 la 3 es solo final
             for (int i = 0; i < num_productos; i++) {
                 Producto producto = this.bufferIn.obtenerMensaje(this);                
-                if (producto.isColor() == true)
+                //if (producto.isColor() == true)
 //                    System.out.println("El producto es naranja");                
 //                System.out.print("\tProducto"+producto.getIdProducto()+"color"+producto.isColor());
                 this.bufferOut.insertarMensaje(this, producto);

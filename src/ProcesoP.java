@@ -32,7 +32,7 @@ public abstract class ProcesoP extends Thread {
             System.out.println("Se creo el producto: "+  "id: "+ producto.getIdProducto() + " y color: "+ producto.isColor()); 
 
         }
-            System.out.println("Arreglo de productos: "+ productosVerificar);
+            //System.out.println("Arreglo de productos: "+ productosVerificar);
 
         //        System.out.print("id producto 0 de la lista: "+ arregloProductos.get(0).getIdProducto()+"\n");
         //        System.out.print("id producto 1 de la lista: "+ arregloProductos.get(1).getIdProducto()+"\n");
